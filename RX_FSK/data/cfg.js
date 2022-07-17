@@ -87,6 +87,7 @@ var cfgs = [
 [ "touch_thresh", "Touch button threshold<br>(0 for calib mode)"],
 [ "power_pout", "Power control port"],
 [ "led_pout", "LED output port"],
+[ "buzzer_pout", "Buzzer output port"],
 [ "gps_rxd", "GPS RXD pin (-1 to disable)"],
 [ "gps_txd", "GPS TXD pin (not really needed)"],
 [ "batt_adc", "Battery measurement pin"],

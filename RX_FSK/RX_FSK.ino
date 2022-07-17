@@ -686,6 +686,7 @@ struct st_configitems config_list[] = {
   {"touch_thresh", 0, &sonde.config.touch_thresh},
   {"power_pout", 0, &sonde.config.power_pout},
   {"led_pout", 0, &sonde.config.led_pout},
+  {"buzzer_pout", 0, &sonde.config.buzzer_pout},
   {"gps_rxd", 0, &sonde.config.gps_rxd},
   {"gps_txd", 0, &sonde.config.gps_txd},
   {"batt_adc", 0, &sonde.config.batt_adc},
@@ -1377,6 +1378,7 @@ void touchISR2();
 
 Ticker ticker;
 Ticker ledFlasher;
+Ticker beeper;
 
 #define IS_TOUCH(x) (((x)!=255)&&((x)!=-1)&&((x)&128))
 void initTouch() {
@@ -1646,6 +1648,17 @@ void checkTouchButton(Button & button) {
         button.pressed = KP_SHORT;
       }
     }
+  }
+}
+
+void buzzerOffCallback() {
+  digitalWrite(sonde.config.buzzer_pout, LOW);
+}
+
+void beep(int ms) {
+  if (sonde.config.buzzer_pout >= 0) {
+    digitalWrite(sonde.config.buzzer_pout, HIGH);
+    beeper.once_ms(ms, buzzerOffCallback);
   }
 }
 
@@ -1998,6 +2011,11 @@ void setup()
     flashLed(1000); // testing
   }
 
+  if (sonde.config.buzzer_pout >= 0) {
+    pinMode(sonde.config.buzzer_pout, OUTPUT);
+    beep(250); // testing
+  }
+  
   button1.pin = sonde.config.button_pin;
   button2.pin = sonde.config.button2_pin;
   if (button1.pin != 0xff) {

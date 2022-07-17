@@ -88,6 +88,7 @@ void Sonde::defaultConfig() {
 	}
 	config.touch_thresh = 70;
 	config.led_pout = -1;
+	config.buzzer_pout = -1;
 	config.power_pout = -1;
 	config.spectrum=10;
 	// Try autodetecting board type
@@ -214,7 +215,8 @@ void Sonde::defaultConfig() {
 			config.button_pin = 2 + 128;     // GPIO2 / T2
 			config.button2_pin = 14 + 128;   // GPIO14 / T6
 			config.led_pout = 25;
-			config.batt_adc = 35; 
+			config.batt_adc = 35;
+			config.buzzer_pout = 13;			
 		}
 	}
 	//
@@ -453,6 +455,7 @@ void Sonde::setup() {
 }
 
 extern void flashLed(int ms);
+extern void beep(int ms);
 
 void Sonde::receive() {
 	uint16_t res = 0;
@@ -480,6 +483,7 @@ void Sonde::receive() {
 	// state information for RX_TIMER / NORX_TIMER events
         if(res==RX_OK || res==RX_ERROR) {  // something was received...
 		flashLed( (res==RX_OK)?700:100);
+		beep( ( (res==RX_OK) && ((sonde.si()->d.validPos&0x7)==0x7) )?20:300);
                 if(si->lastState != 1) {
                         si->rxStart = millis();
                         si->lastState = 1;
