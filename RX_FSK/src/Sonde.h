@@ -238,21 +238,18 @@ struct st_cm {
 	int port;
 };
 
-<<<<<<< HEAD
 struct st_ss {
  	int active;
  	char host[64];
  	int port;
  };
  
-=======
 struct st_callmebot {
 	int active;
 	char phone[16];
 	char apikey[16];
 };
 
->>>>>>> 0d5a6e9 (Send WhatApp push notifications upon sonde detection using 'CallMeBot' service)
 struct st_sondehub {
 	int active;
 	int chase;
