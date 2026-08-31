@@ -1971,6 +1971,18 @@ void beepConnected() {
   }
 }
 
+// Three quick beeps, e.g. to signal a CallMeBot message was sent
+void beepCallMeBot() {
+  if (sonde.config.buzzer_pout >= 0) {
+    for (int i = 0; i < 3; i++) {
+      digitalWrite(sonde.config.buzzer_pout, HIGH);
+      delay(60);
+      digitalWrite(sonde.config.buzzer_pout, LOW);
+      delay(60);
+    }
+  }
+}
+
 void ledOffCallback() {
   digitalWrite(sonde.config.led_pout, LOW);
 }

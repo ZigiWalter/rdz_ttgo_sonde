@@ -3,6 +3,7 @@
 
 extern Sonde sonde;
 extern Display disp;
+extern void beepCallMeBot();
 
 static unsigned long stallStartTime;
 
@@ -19,6 +20,7 @@ void CallMeBot::doCallMeBot(WiFiClient* client, SondeInfo* sondeInfo){
 			res=sendNotification(client, sondeInfo);
 			if (res==SUCCESS){
 				showStatus("Sent.", false, 1, 0); //Message will typically be immediately overwritten, consider removing
+				beepCallMeBot();
 				nextStatus = SENT;
 			}else{
 				stallStartTime = millis();
