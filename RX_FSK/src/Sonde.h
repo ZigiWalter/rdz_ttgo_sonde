@@ -19,7 +19,9 @@ typedef enum BoardTypes {
    BOARD_UNKNOWN
 } BoardTypes;
 
-
+enum DbgLevel { DEBUG_OFF=0, DEBUG_INFO=1, DEBUG_SPARSER=16, DEBUG_DISPLAY=8 };  // to be extended for configuring serial debug output
+enum NotificationStatus {INVALID, NOT_NOTIFIED, SENT, REPLY_OK, REPLY_NOT_OK, WAIT_BEFORE_RETRY};
+extern uint8_t debug;
 
 // RX_TIMEOUT: no header detected
 // RX_ERROR: header detected, but data not decoded (crc error, etc.)
@@ -134,6 +136,7 @@ typedef struct st_sondeinfo {
         SondeType type;
         float freq;
 	char launchsite[18];		
+	NotificationStatus notificationStatus;
 
 	// Second part: internal decoder state. no need to clear this on new sonde
         // RSSI from receiver
@@ -241,6 +244,12 @@ struct st_ss {
  	int port;
  };
  
+struct st_callmebot {
+	int active;
+	char phone[16];
+	char apikey[16];
+};
+
 struct st_sondehub {
 	int active;
 	int chase;
@@ -277,6 +286,7 @@ typedef struct st_rdzconfig {
 	int led_pout;			// POUT port number of LED (used as serial monitor)
 	int buzzer_pout;	    // POUT port number of buzzer
 	int power_pout;			// Power control pin (for Heltec v2)
+	st_callmebot callmebot; // callmebot settings
 	int disptype;			// 0=OLED; 1=ILI9225
 	int oled_sda;			// OLED/TFT data pin 
 	int oled_scl;			// OLED/TFT clock pin
