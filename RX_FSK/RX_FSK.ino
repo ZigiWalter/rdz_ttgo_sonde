@@ -1958,6 +1958,19 @@ void beep(int ms) {
   }
 }
 
+// Two quick beeps, e.g. to signal a WiFi station connection
+void beepConnected() {
+  if (sonde.config.buzzer_pout >= 0) {
+    digitalWrite(sonde.config.buzzer_pout, HIGH);
+    delay(60);
+    digitalWrite(sonde.config.buzzer_pout, LOW);
+    delay(60);
+    digitalWrite(sonde.config.buzzer_pout, HIGH);
+    delay(60);
+    digitalWrite(sonde.config.buzzer_pout, LOW);
+  }
+}
+
 void ledOffCallback() {
   digitalWrite(sonde.config.led_pout, LOW);
 }
@@ -2802,6 +2815,7 @@ void WiFiEvent(WiFiEvent_t event)
       break;
     case ARDUINO_EVENT_WIFI_STA_CONNECTED:
       Serial.println("Connected to access point");
+      beepConnected();
       if (wifi_state == WIFI_CONNECT_GOT_DISCONNECT) {
         /* Connection came back on its own; don't run the disconnect+retry path */
         wifi_state = WIFI_CONNECT;
